@@ -73,7 +73,7 @@ table {
 }
 
 #debug{
-	margin-top: 900px;
+	margin-top: 700px;
 }
 
 #outputs, #description, #inputs{
@@ -136,5 +136,13 @@ a{
 
 a:hover{
 	text-decoration: underline;
+}
+
+#outputs{
+	background-color: rgba(46,49,61,0.05873631);
+	padding: 10px;
+	width: 45%;
+	border: 1px solid #b0b0b0;
+	font-family: "Courier New", Courier, mono;
 }
 
