@@ -1,0 +1,47 @@
+{# templates/nsprofile.html.twig #}
+
+{% extends 'base.html.twig' %}
+
+{% block title %}Autotune Profile Files Generator{% endblock %}
+
+{% block body %}
+<div id="header">
+  <div id="logo"><img src="{{ asset('images/ns-logo.png') }}"/></div>
+  <div id="title">Autotune Profile Files Generator</div>
+</div>
+
+<div id="description">
+  <p>
+    This page is completely experimental and should only be used by
+    people who are interested in testing the software. Do not use the
+    files output here without first reviewing them carefully to make sure
+    they are correct. If you are not sure what a correct profile file should
+    look like, this page is not for you. Once the functionality is
+    thoroughly tested, this warning will be removed.
+  </p>
+  <p>
+    This page is designed to automatically generate the profile files required to run
+    <a href="http://openaps.readthedocs.io/en/latest/docs/Customize-Iterate/autotune.html">OpenAPS Autotune</a>
+    from your
+    <a href="http://www.nightscout.info/">Nightscout</a>
+    profile.
+  </p>
+</div>
+
+<div id="inputs">
+  <form id="input_form" name="input_form">
+    <label for="ns_url">Nightscout URL</label>
+    <input id="ns_url" name="ns_url" placeholder="https://yournightscout.herokuapp.com">
+    <input type="submit" value="Generate Profile Files">
+  </form>
+</div>
+
+<div id="outputs">
+  ISF: {{ isf }}
+  Carb Ratio: {{ carb_ratio }}
+</div>
+
+<div id="debug">
+  {{ dump(profile) }}
+</div>
+{% endblock %}

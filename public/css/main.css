@@ -1,0 +1,140 @@
+/* @override http://127.0.0.1:8000/css/main.css */
+
+/* @group CSS Reset */
+
+/* http://meyerweb.com/eric/tools/css/reset/ 
+   v2.0 | 20110126
+   License: none (public domain)
+*/
+
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed, 
+figure, figcaption, footer, header, hgroup, 
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section {
+	display: block;
+}
+body {
+	line-height: 1;
+}
+ol, ul {
+	list-style: none;
+}
+blockquote, q {
+	quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+	content: '';
+	content: none;
+}
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+
+
+/* @end */
+
+#header{
+	background-color: #21252B;
+	color: #feffff;
+	display: block;
+	height: 50px;
+	font-family: "Lucida Grande", Lucida, Verdana, sans-serif;
+}
+
+#header #logo {
+	padding: 10px;
+	float: left;
+}
+
+#header #title {
+	padding-top: 16px;
+	font-size: 16px;
+}
+
+#debug{
+	margin-top: 900px;
+}
+
+#outputs, #description, #inputs{
+	margin: 20px;
+}
+
+html, body {
+	height: 100%;
+	color: #454e5c;
+	font: 12px/18px "Helvetica Neue", Arial, Helvetica, Geneva, sans-serif;
+}
+
+p{
+	margin-bottom: 18px;
+}
+
+input, label{
+	display: block;
+}
+
+label{
+	margin-left: 2px;
+	margin-bottom: 8px;
+	font-weight: bold;
+}
+
+input{
+    background: rgba(255,255,255,.1);
+    border: none;
+    border-radius: 4px;
+    font-size: 14px;
+    margin: 0;
+    outline: 0;
+    padding: 7px;
+    width: 50%;
+    box-sizing: border-box; 
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box; 
+    background-color: #e8eeef;
+    color:#8a97a0;
+    -webkit-box-shadow: 0 1px 0 rgba(0,0,0,0.03) inset;
+    box-shadow: 0 1px 0 rgba(0,0,0,0.03) inset;
+    margin-bottom: 30px;
+}
+
+input[type="submit"]{
+	background-color: #2f333e;
+	width: 200px;	
+}
+
+input[type="submit"]:hover{
+	background-color: #3a3f4d;
+	color: #c4ccd6;
+}
+
+a{
+	color: #1a75bb;
+	text-decoration: none;
+}
+
+a:hover{
+	text-decoration: underline;
+}
+
