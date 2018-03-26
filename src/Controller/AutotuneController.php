@@ -11,7 +11,8 @@ use App\Model\AutotuneProfile;
 class AutotuneController extends Controller
 {
     /**
-     * @Route("/nsprofile", name="nsprofile")
+     * @Route("/",            name="home")
+     * @Route("/nsprofile",   name="nsprofile")
      */
     public function nsProfile()
     {
