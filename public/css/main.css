@@ -1,4 +1,7 @@
-/* @override http://127.0.0.1:8000/css/main.css */
+/* @override 
+	http://127.0.0.1:8000/css/main.css
+	http://dev.autotune.ella7.com/css/main.css
+*/
 
 /* @group CSS Reset */
 
@@ -113,7 +116,7 @@ input{
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box; 
     background-color: #e8eeef;
-    color:#8a97a0;
+    color: #2e3235;
     -webkit-box-shadow: 0 1px 0 rgba(0,0,0,0.03) inset;
     box-shadow: 0 1px 0 rgba(0,0,0,0.03) inset;
     margin-bottom: 30px;
@@ -121,7 +124,8 @@ input{
 
 input[type="submit"]{
 	background-color: #2f333e;
-	width: 200px;	
+	width: 200px;
+    color:#8a97a0;		
 }
 
 input[type="submit"]:hover{
