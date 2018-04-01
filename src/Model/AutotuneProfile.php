@@ -96,7 +96,7 @@ class AutotuneProfile
 
   public function dia()
   {
-    return (int)$this->ns_profile->dia;
+    return (float)$this->ns_profile->dia;
   }
 
   public function basalProfile()
