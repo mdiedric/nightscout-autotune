@@ -12,10 +12,12 @@ class AutotuneProfile
 
   const NSAPI_PATH              = '/api/v1/';
   const NSAPI_PROFILE_ENDPOINT  = 'profile.json';
+  const MGDL_PER_MMOLL          = 18;
 
   private $ns_url;
   private $ns_profile_api_response;
   private $ns_profile;
+  private $units;
 
   function __construct($ns_url)
   {
@@ -35,6 +37,7 @@ class AutotuneProfile
     $response = $client->get(self::NSAPI_PROFILE_ENDPOINT);
     $profile =  json_decode($response->getBody());
     $this->ns_profile_api_response = $profile[0];
+    $this->units = $this->ns_profile_api_response->units;
   }
 
   private function setSelectedNightscoutProfile()
@@ -54,6 +57,7 @@ class AutotuneProfile
     // set select as the default profile if there's more than one profile
     if($num_profiles > 0){
       $this->ns_profile = $profile->store->{$profile->defaultProfile};
+      $this->units = $this->ns_profile->units;
     }
   }
 
@@ -83,6 +87,9 @@ class AutotuneProfile
       "autosens_max"      => 1.2,
       "autosens_min"      => 0.7
     );
+    if($this->units == 'mmol/l') {
+      $profile_array['isfProfile'] = $profile_array['isfProfile'] * self::MGDL_PER_MMOLL;
+    }
     return $profile_array;
   }
 
