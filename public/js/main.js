@@ -3,7 +3,7 @@ $(function(){
   $('#form_submit_button').click(function(e){
     e.preventDefault();
 
-    // nsurlvalidate_url is defined in global scope in the nsprofile template
+    // json_profile_url is defined in global scope in the nsprofile template
     // probably a better way to do this
     var posting = $.post(
       json_profile_url,
