@@ -19,7 +19,7 @@ class AutotuneProfile
 
   function __construct($ns_url)
   {
-    $this->ns_url = $ns_url;
+    $this->ns_url = preg_replace('{/$}', '', $ns_url);
     $this->setNightscoutProfileFromURL();
     $this->setSelectedNightscoutProfile();
   }
@@ -67,9 +67,14 @@ class AutotuneProfile
     return AutotuneProfile::timeWeightedValue($this->ns_profile->carbratio);
   }
 
-  public function autotuneJson()
+  public function asJson()
   {
-    $data = array(
+    return json_encode($this->asArray(), JSON_PRETTY_PRINT);
+  }
+
+  public function asArray()
+  {
+    $profile_array = array(
       "min_5m_carbimpact" => 3,
       "dia"               => $this->dia(),
       "basalprofile"      => $this->basalProfile(),
@@ -78,7 +83,7 @@ class AutotuneProfile
       "autosens_max"      => 1.2,
       "autosens_min"      => 0.7
     );
-    return json_encode($data, JSON_PRETTY_PRINT);
+    return $profile_array;
   }
 
   public function dia()
