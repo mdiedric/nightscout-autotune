@@ -86,7 +86,7 @@ table {
 html, body {
 	height: 100%;
 	color: #454e5c;
-	font: 12px/18px "Helvetica Neue", Arial, Helvetica, Geneva, sans-serif;
+	font: 14px/20px "Helvetica Neue", Arial, Helvetica, Geneva, sans-serif;
 }
 
 p{
@@ -111,7 +111,7 @@ input{
     margin: 0;
     outline: 0;
     padding: 7px;
-    width: 50%;
+    width: 628px;
     box-sizing: border-box; 
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box; 
@@ -128,9 +128,11 @@ input[type="submit"]{
     color:#8a97a0;		
 }
 
+
 input[type="submit"]:hover{
 	background-color: #3a3f4d;
 	color: #c4ccd6;
+	cursor: pointer;
 }
 
 a{
@@ -145,8 +147,11 @@ a:hover{
 #outputs{
 	background-color: rgba(46,49,61,0.05873631);
 	padding: 10px;
-	width: 45%;
+	width: 600px;
 	border: 1px solid #b0b0b0;
 	font-family: "Courier New", Courier, mono;
 }
 
+#download-button {
+	margin-left: 20px;
+}
