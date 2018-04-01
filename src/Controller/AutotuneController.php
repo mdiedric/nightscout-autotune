@@ -6,10 +6,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\HttpFoundation\ResponseHeaderBag;
-use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
-use GuzzleHttp\Client;
 use App\Model\AutotuneProfile;
 
 class AutotuneController extends Controller
@@ -56,8 +53,7 @@ class AutotuneController extends Controller
     {
       $ns_url = $session->get('ns_url');
       $profile = new AutotuneProfile($ns_url);
-      $profile_json = $profile->asJson();
-      $zip_path = self::createZipFile($profile_json);
+      $zip_path = $profile->createZipFile();
       return $this->file($zip_path);
     }
 
@@ -70,29 +66,6 @@ class AutotuneController extends Controller
       }
       //TODO Add URL validation code here
       return true;
-    }
-
-    private static function createZipFile($profile_json)
-    {
-      $fileSystem = new Filesystem();
-      $random_string = str_replace('/','', base64_encode(random_bytes(10)));
-      $random_string = str_replace('=','', $random_string);
-      $tmp_path = '/tmp/com.ella7.autotune/'.$random_string;
-      $fileSystem->mkdir($tmp_path.'/settings', 0755);
-
-      $zip_filename = 'autotune_settings.zip';
-      $zip_path     = $tmp_path.'/'.$zip_filename;
-      $zip = new \ZipArchive;
-      $res = $zip->open($zip_path, \ZipArchive::CREATE);
-      if ($res === TRUE) {
-          $zip->addFromString('/settings/profile.json',     $profile_json);
-          $zip->addFromString('/settings/pumpprofile.json', $profile_json);
-          $zip->addFromString('/settings/autotune.json',    $profile_json);
-          $zip->close();
-      } else {
-          throw new \Exception("Error: Could not create the zip archive");
-      }
-      return $zip_path;
     }
 
 }

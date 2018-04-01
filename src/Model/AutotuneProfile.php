@@ -3,6 +3,7 @@
 namespace App\Model;
 
 use GuzzleHttp\Client;
+use Symfony\Component\Filesystem\Filesystem;
 
 /**
  *
@@ -54,7 +55,7 @@ class AutotuneProfile
       throw new \Exception("No profiles were found", 1);
     }
 
-    // set select as the default profile if there's more than one profile
+    // if there's more than one profile, use default profile
     if($num_profiles > 0){
       $this->ns_profile = $profile->store->{$profile->defaultProfile};
       $this->units = $this->ns_profile->units;
@@ -123,6 +124,30 @@ class AutotuneProfile
         "endOffset"     => 1440
       ))
     );
+  }
+
+  public function createZipFile()
+  {
+    $profile_json = $this->asJson();
+
+    $fileSystem = new Filesystem();
+    $random_string = str_replace(['/','='],'', base64_encode(random_bytes(10)));
+    $tmp_path = '/tmp/com.ella7.autotune/'.$random_string;
+    $fileSystem->mkdir($tmp_path, 0755);
+
+    $zip_filename = 'autotune_settings.zip';
+    $zip_path     = $tmp_path.'/'.$zip_filename;
+    $zip = new \ZipArchive;
+    $res = $zip->open($zip_path, \ZipArchive::CREATE);
+    if ($res === TRUE) {
+        $zip->addFromString('/settings/profile.json',     $profile_json);
+        $zip->addFromString('/settings/pumpprofile.json', $profile_json);
+        $zip->addFromString('/settings/autotune.json',    $profile_json);
+        $zip->close();
+    } else {
+        throw new \Exception("Error: Could not create the zip archive");
+    }
+    return $zip_path;
   }
 
 
