@@ -64,7 +64,11 @@ class AutotuneProfile
 
   public function weightedISF()
   {
-    return AutotuneProfile::timeWeightedValue($this->ns_profile->sens);
+    $weighted_isf = AutotuneProfile::timeWeightedValue($this->ns_profile->sens);
+    if($this->units == 'mmol') {
+      $weighted_isf *= self::MGDL_PER_MMOLL;
+    }
+    return round($weighted_isf, 1);
   }
 
   public function weightedCarbRatio()
@@ -88,9 +92,6 @@ class AutotuneProfile
       "autosens_max"      => 1.2,
       "autosens_min"      => 0.7
     );
-    if($this->units == 'mmol') {
-      $profile_array['isfProfile'] = $profile_array['isfProfile'] * self::MGDL_PER_MMOLL;
-    }
     return $profile_array;
   }
 
