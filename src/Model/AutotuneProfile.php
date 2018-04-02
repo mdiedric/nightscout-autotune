@@ -88,7 +88,7 @@ class AutotuneProfile
       "autosens_max"      => 1.2,
       "autosens_min"      => 0.7
     );
-    if($this->units == 'mmol/l') {
+    if($this->units == 'mmol') {
       $profile_array['isfProfile'] = $profile_array['isfProfile'] * self::MGDL_PER_MMOLL;
     }
     return $profile_array;
