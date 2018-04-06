@@ -3,6 +3,7 @@
 namespace App\Model;
 
 use GuzzleHttp\Client;
+use Symfony\Component\Filesystem\Filesystem;
 
 /**
  *
@@ -12,14 +13,16 @@ class AutotuneProfile
 
   const NSAPI_PATH              = '/api/v1/';
   const NSAPI_PROFILE_ENDPOINT  = 'profile.json';
+  const MGDL_PER_MMOLL          = 18;
 
   private $ns_url;
   private $ns_profile_api_response;
   private $ns_profile;
+  private $units;
 
   function __construct($ns_url)
   {
-    $this->ns_url = $ns_url;
+    $this->ns_url = preg_replace('{/$}', '', $ns_url);
     $this->setNightscoutProfileFromURL();
     $this->setSelectedNightscoutProfile();
   }
@@ -35,6 +38,7 @@ class AutotuneProfile
     $response = $client->get(self::NSAPI_PROFILE_ENDPOINT);
     $profile =  json_decode($response->getBody());
     $this->ns_profile_api_response = $profile[0];
+    $this->units = $this->ns_profile_api_response->units;
   }
 
   private function setSelectedNightscoutProfile()
@@ -51,9 +55,10 @@ class AutotuneProfile
       throw new \Exception("No profiles were found", 1);
     }
 
-    // set select as the default profile if there's more than one profile
+    // if there's more than one profile, use default profile
     if($num_profiles > 0){
       $this->ns_profile = $profile->store->{$profile->defaultProfile};
+      $this->units = $this->ns_profile->units;
     }
   }
 
@@ -67,9 +72,14 @@ class AutotuneProfile
     return AutotuneProfile::timeWeightedValue($this->ns_profile->carbratio);
   }
 
-  public function autotuneJson()
+  public function asJson()
   {
-    $data = array(
+    return json_encode($this->asArray(), JSON_PRETTY_PRINT);
+  }
+
+  public function asArray()
+  {
+    $profile_array = array(
       "min_5m_carbimpact" => 3,
       "dia"               => $this->dia(),
       "basalprofile"      => $this->basalProfile(),
@@ -78,12 +88,15 @@ class AutotuneProfile
       "autosens_max"      => 1.2,
       "autosens_min"      => 0.7
     );
-    return json_encode($data, JSON_PRETTY_PRINT);
+    if($this->units == 'mmol') {
+      $profile_array['isfProfile'] = $profile_array['isfProfile'] * self::MGDL_PER_MMOLL;
+    }
+    return $profile_array;
   }
 
   public function dia()
   {
-    return (int)$this->ns_profile->dia;
+    return (float)$this->ns_profile->dia;
   }
 
   public function basalProfile()
@@ -111,6 +124,30 @@ class AutotuneProfile
         "endOffset"     => 1440
       ))
     );
+  }
+
+  public function createZipFile()
+  {
+    $profile_json = $this->asJson();
+
+    $fileSystem = new Filesystem();
+    $random_string = str_replace(['/','='],'', base64_encode(random_bytes(10)));
+    $tmp_path = '/tmp/com.ella7.autotune/'.$random_string;
+    $fileSystem->mkdir($tmp_path, 0755);
+
+    $zip_filename = 'autotune_settings.zip';
+    $zip_path     = $tmp_path.'/'.$zip_filename;
+    $zip = new \ZipArchive;
+    $res = $zip->open($zip_path, \ZipArchive::CREATE);
+    if ($res === TRUE) {
+        $zip->addFromString('/settings/profile.json',     $profile_json);
+        $zip->addFromString('/settings/pumpprofile.json', $profile_json);
+        $zip->addFromString('/settings/autotune.json',    $profile_json);
+        $zip->close();
+    } else {
+        throw new \Exception("Error: Could not create the zip archive");
+    }
+    return $zip_path;
   }
 
 
